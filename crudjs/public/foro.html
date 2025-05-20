@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Foro de Personas</title>
+  <link rel="stylesheet" href="foro.css" />
+</head>
+<body>
+  <h1>Foro de Peticiones</h1>
+  <div id="foro-container"></div>
+
+  <script>
+    // Obtener los datos del backend
+    fetch('/api/personas')
+      .then(res => res.json())
+      .then(data => {
+        const container = document.getElementById('foro-container');
+
+        data.forEach(persona => {
+          const card = document.createElement('div');
+          card.classList.add('foro-card');
+
+          // Si hay imagen, usamos la ruta local, si no usamos una imagen por defecto
+          const imagenSrc = persona.imagen 
+            ? `uploads/${persona.imagen}` 
+            : 'https://via.placeholder.com/100';
+
+          card.innerHTML = `
+            <div class="foro-contenido">
+              <div class="texto-peticion">
+                <p>${persona.peticion}</p>
+              </div>
+              <div class="autor">
+                <h3>${persona.nombre}</h3>
+                <img src="${imagenSrc}" alt="Imagen de ${persona.nombre}" />
+              </div>
+            </div>
+          `;
+
+          container.appendChild(card);
+        });
+      });
+  </script>
+</body>
+</html>
